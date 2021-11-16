@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class IStatus : MonoBehaviour
 {
-    public float health, energy, hunger, thirst, balas;
+    public float health, energy, hunger, thirst, balas,flechas;
     public float healthTick, energyTick, hungerTick, thirstTick;
     public float healthMax, energyMax, hungerMax, thirstMax, balasMax;
     public float thirstMin;
-    public Text HealthText, EnergyText, HungerText, ThirstText, balasText, alertText;
+    public Text HealthText, HungerText, ThirstText, balasText, alertText,flechasText;
     string alert = " ";
     public float tiempo;
     public Image healthIm, hungerIm, thirstIm;
@@ -33,10 +33,10 @@ public class IStatus : MonoBehaviour
     private void SeteoUI()
     {
         HealthText.text = "Vida: ";
-        EnergyText.text = "Energia: " + energy.ToString("f0");
         HungerText.text = "Hambre: ";
         ThirstText.text = "Sed: ";
         balasText.text = "balas: " + balas;
+        flechasText.text = "Flechas: " + flechas;
         healthIm.fillAmount = health / healthMax;
         hungerIm.fillAmount = hunger / hungerMax;
         thirstIm.fillAmount = thirst / thirstMax;
@@ -75,6 +75,15 @@ public class IStatus : MonoBehaviour
             Elim1();
         }
     }
+    public void restarhambre(float resta)
+    {
+        if (hunger <= 0.9f) alerta("No tenes Hambre");
+        else
+        {
+            hunger -= resta;
+            Elim1();
+        }
+    }
 
     public void sumabalas(float suma)
     {
@@ -85,14 +94,19 @@ public class IStatus : MonoBehaviour
             Elim1();
         }
     }
+    public void sumaflechas(float suma)
+    {
+            flechas += suma;
+            Elim1();        
+    }
 
-    private static void Elim1()
+    public void Elim1()
     {
         FuncionObjeto objeto = FindObjectOfType<FuncionObjeto>();
         objeto.objeto.quantity--;
     }
     
-    void alerta(string a)
+    public void alerta(string a)
     {
         tiempo = 2;
         alert = a;

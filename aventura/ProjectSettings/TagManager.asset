@@ -6,6 +6,17 @@ TagManager:
   tags:
   - caja
   - agarrable
+  - mesa
+  - Arbol
+  - star
+  - Enemy
+  - White
+  - Red
+  - Orange
+  - Black
+  - Status
+  - Zombie
+  - piso
   layers:
   - Default
   - TransparentFX

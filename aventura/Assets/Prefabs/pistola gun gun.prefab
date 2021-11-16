@@ -234,7 +234,7 @@ MonoBehaviour:
   quantity: 0
   stackable: 0
   gameobject: {fileID: 1279446839249526}
-  activo: 0
+  activo: 1
 --- !u!65 &8846446229874951065
 BoxCollider:
   m_ObjectHideFlags: 0

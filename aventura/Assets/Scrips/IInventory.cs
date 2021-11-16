@@ -7,14 +7,25 @@ public class IInventory : MonoBehaviour
     public List<IObject> inventory;
     public Text inventarioText;
     int x = 0, xMax= -1;
-
-
+    public Transform inventoryUI;
+    public ISlotUI slotUIPrefab;
+    private string select1, select2;
+    private GameObject objeto1, objeto2;
+    private int num1, num2;
+    public GameObject espada, arco, pistola, flecha;
+    private ControlJugador controljugador;
+    public Transform aparicion;
+    private void Start()
+    {
+        UpdateUI();
+        controljugador = FindObjectOfType<ControlJugador>();
+    }
     private void Update()
     {
-        SetearTexto();
         Instaciador();
         elimStac();
         EspacioInventario();
+        crafting();
     }
 
     public void Add(IObject item)
@@ -37,29 +48,100 @@ public class IInventory : MonoBehaviour
     public void Remove(IObject item)
     {
         inventory.Remove(item);
+        UpdateUI();
     }
 
-    void SetearTexto()
+    public void UpdateUI()
     {
-        string inventariot = "";
-        int boton = 0;
-        foreach (var item in inventory)
+        IStatus status = FindObjectOfType<IStatus>();
+        foreach (Transform child in inventoryUI) if (child.gameObject != slotUIPrefab.gameObject) Destroy(child.gameObject);
+        foreach (IObject item in inventory)
         {
-            string texto = "";
-            string nombre = item.name;
-            boton++;
-            if (item.stackable)
+            
+            ISlotUI slot = Instantiate(slotUIPrefab.gameObject, inventoryUI).GetComponent<ISlotUI>();
+            slot.itemName.text = item.name + " x " + item.quantity;
+            slot.delete.onClick.AddListener(() => {
+                Destroy(item.gameobject);
+                Remove(item); });
+            slot.removeOne.onClick.AddListener(() => 
             {
-                int cantidad = 0;
-                cantidad = item.quantity;
-                texto = nombre + "( cant: " + cantidad + ")";
-            }
-            else texto = nombre;
-            inventariot = inventariot + boton + " " + texto + "\n";
+                if (!item.stackable) {
+                    Destroy(item.gameobject);
+                    Remove(item);
+                } 
+                else status.Elim1();
+            } );
+            slot.select.onClick.AddListener(() => {
+                if (!(select1 == null) && select2 == null) Asigncrafting(item.name, item.gameobject, inventory.IndexOf(item), "segundo");
+                if (select1 == null) Asigncrafting(item.name, item.gameobject, inventory.IndexOf(item), "primero");
+            });
+            slot.gameObject.SetActive(true);
         }
-        inventarioText.text = inventariot;
-
     }
+    void Asigncrafting(string name, GameObject objeto, int i,string cual)
+    {
+        if(cual== "primero") { select1 = name; objeto1 = objeto; num1 = i; }
+
+        if (cual == "segundo") { select2 = name; objeto2 = objeto; num2 = i; }
+         
+        
+        
+    }
+    void crafting()
+    {
+        if (!(select1 == null && select2 == null))
+        {
+            if ((select1 == "Palo" && select2 == "Piedra") || (select1 == "Piedra" && select2 == "Palo"))
+            {
+                Instantiate(flecha,aparicion.position,aparicion.rotation);
+                
+                DestroyCrafting();
+                UpdateUI();
+            }
+            else if ((select1 == "Cargador" && select2 == "Hierro") || (select1 == "Hierro" && select2 == "Cargador"))
+            {
+                Instantiate(pistola, aparicion.position, aparicion.rotation);
+
+                DestroyCrafting();
+                UpdateUI();
+            }
+            else if ((select1 == "Palo" && select2 == "Hierro") || (select1 == "Hierro" && select2 == "Palo"))
+            {
+                Instantiate(espada, aparicion.position, aparicion.rotation);
+
+                DestroyCrafting();
+                UpdateUI();
+            }
+            else if ((select1 == "Palo" && select2 == "Tela Araña") || (select1 == "Tela Araña" && select2 == "Palo"))
+            {
+                Instantiate(arco, aparicion.position, aparicion.rotation);
+
+                DestroyCrafting();
+                UpdateUI();
+            }
+            else
+            {
+                if (!(select2 == null))
+                {
+                    IStatus status = FindObjectOfType<IStatus>();
+                    status.alerta("Crafteo invalido");
+                    select1 = null;
+                    select2 = null;
+                }
+            }
+        }
+    }
+
+    private void DestroyCrafting()
+    {
+        Destroy(objeto1);
+        Destroy(objeto2);
+        Remove(inventory[num1]);
+        Remove(inventory[num2]);
+        select1 = null;
+        select2 = null;
+    }
+
     void Instaciador()
     {
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
