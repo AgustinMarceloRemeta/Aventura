@@ -165,8 +165,8 @@ MonoBehaviour:
   spawn1: {fileID: 8662751893889392878}
   spawn2: {fileID: 4418966931295796401}
   vida: 100
-  ZombieWhite: {fileID: 3151704657677549655, guid: e193c909bf947a24f8879bbd121148c3, type: 3}
-  ZombieBlack: {fileID: 3598898713757358904, guid: 603c29e473a6232448212fd2e341aa8a, type: 3}
+  ZombieWhite: {fileID: 0}
+  ZombieBlack: {fileID: 0}
 --- !u!54 &705713042941646080
 Rigidbody:
   m_ObjectHideFlags: 0

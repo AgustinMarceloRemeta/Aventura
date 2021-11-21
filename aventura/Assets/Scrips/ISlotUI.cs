@@ -6,6 +6,6 @@ using UnityEngine.UI;
 public class ISlotUI : MonoBehaviour
 {
     public Text itemName;
-    public Button delete, removeOne, select;
+    public Button delete, removeOne, craft, build;
     
 }

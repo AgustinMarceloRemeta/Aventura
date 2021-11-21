@@ -17,6 +17,7 @@ TagManager:
   - Status
   - Zombie
   - piso
+  - Building
   layers:
   - Default
   - TransparentFX

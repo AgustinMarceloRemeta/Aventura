@@ -6,10 +6,11 @@ public class ControlJugador : MonoBehaviour
     public GameObject camara;
     public Transform mano;
     public int fuerza;
-    public GameObject palo;
+    public GameObject palo, inventario, crafter,building;
 
     void Start()
     {
+
     }
 
 
@@ -17,21 +18,12 @@ public class ControlJugador : MonoBehaviour
     {
 
         if (Physics.Raycast(camara.transform.position, camara.transform.forward, out RaycastHit hit, 5f)) {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 if (hit.collider.CompareTag("caja"))
                 {
                     ControlCaja controlcaja = hit.collider.GetComponentInParent<ControlCaja>();
                     controlcaja.DestroyBox();
-                }
-                if (hit.collider.CompareTag("agarrable"))
-                {
-                    IObject objeto = hit.collider.GetComponentInParent<IObject>();
-                    Agregar(objeto);
-                }
-                if (hit.collider.CompareTag("mesa"))
-                {
-                    Debug.Log("crafteo");
                 }
            }
             if (Input.GetMouseButtonDown(0))
@@ -47,19 +39,39 @@ public class ControlJugador : MonoBehaviour
                     enemigo.vida -= fuerza;
                 }
             }
-                }
+            if(Input.GetKeyDown(KeyCode.C))
+            if (hit.collider.CompareTag("mesa"))
+            {                              
+                crafter.SetActive(!crafter.activeSelf);
+                    if (crafter.activeSelf == true)
+                    {
+                        Cursor.lockState = CursorLockMode.Confined;
+                        Time.timeScale = 0;
+                    }
+                    else
+                    {
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Time.timeScale = 1;
+                    }
+            }
+            if(Input.GetKeyDown(KeyCode.X))
+            {
+                building.SetActive(!building.activeSelf);
+                if (crafter.activeSelf == true)
+
+                    Cursor.lockState = CursorLockMode.Confined;
+
+                else
+                   Cursor.lockState = CursorLockMode.Locked;
+          
+                
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            inventario.SetActive(!inventario.activeSelf);
+            if(inventario.activeSelf== true) Cursor.lockState = CursorLockMode.Confined;
+            else Cursor.lockState = CursorLockMode.Locked;
+        }
     }
-
-    public void Agregar(IObject objeto)
-    {
-        IInventory inventory = FindObjectOfType<IInventory>();
-        inventory.Add(objeto);
-        objeto.gameobject.SetActive(false);
-        objeto.gameobject.transform.position = new Vector3(mano.position.x, mano.position.y, mano.position.z);
-        objeto.gameobject.transform.rotation = mano.rotation;
-        objeto.gameobject.transform.SetParent(mano);
-        inventory.UpdateUI();
-    }
-
-
 }
