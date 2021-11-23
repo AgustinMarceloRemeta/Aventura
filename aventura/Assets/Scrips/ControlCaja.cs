@@ -7,7 +7,7 @@ public class ControlCaja : MonoBehaviour
     public GameObject[] armas;
     public MeshRenderer Render;
     public BoxCollider colider;
-    public Transform ubi,spawn1,spawn2;
+    public Transform ubi, spawn1;
     public int vida = 100;
     bool paso;
     public GameObject ZombieWhite, ZombieBlack;
@@ -46,8 +46,10 @@ public class ControlCaja : MonoBehaviour
     }
     private void spawn()
     {
-        Instantiate(ZombieBlack, spawn1.position, Quaternion.identity);
-        Instantiate(ZombieWhite, spawn2.position, Quaternion.identity);
+        int random = Random.Range(0, 1);
+
+       if(random == 0) Instantiate(ZombieBlack, spawn1.position, Quaternion.identity);
+       else  Instantiate(ZombieWhite, spawn1.position, Quaternion.identity);
     }
 }
 

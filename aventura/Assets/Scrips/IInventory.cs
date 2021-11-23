@@ -139,11 +139,12 @@ public class IInventory : MonoBehaviour
     {
      if(crafteo== "flecha")
         {
-            for (int i = 0; i < inventory.Count; i++)
-                
+            for (int i = 0; i < inventory.Count; i++)               
                 if (inventory[i].name == "Palo") Remove(inventory[i].name, inventory[i].quantity, inventory[i].objeto);
+
             for (int i = 0; i < inventory.Count; i++)
-                if (inventory[i].name == "Piedra") Remove(inventory[i].name, inventory[i].quantity, inventory[i].objeto);           
+                if (inventory[i].name == "Piedra") Remove(inventory[i].name, inventory[i].quantity, inventory[i].objeto);    
+            
             Instantiate(flecha, aparicion.position, Quaternion.identity);
         }
         if (crafteo == "espada")

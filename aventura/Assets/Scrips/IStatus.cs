@@ -62,7 +62,7 @@ public class IStatus : MonoBehaviour
         else
         {
             health += suma;           
-            Elim1();
+            Elim1("Botiquin");
         }
     }
 
@@ -72,7 +72,7 @@ public class IStatus : MonoBehaviour
         else
         {
             thirst -= resta;           
-            Elim1();
+            Elim1("Agua");
         }
     }
     public void restarhambre(float resta)
@@ -81,7 +81,7 @@ public class IStatus : MonoBehaviour
         else
         {
             hunger -= resta;
-            Elim1();
+            Elim1("Manzana");
         }
     }
 
@@ -91,19 +91,20 @@ public class IStatus : MonoBehaviour
         else
         {
             balas += suma;           
-            Elim1();
+            Elim1("Caja de balas");
         }
     }
     public void sumaflechas(float suma)
     {
             flechas += suma;
-            Elim1();        
+            Elim1("Flecha");        
     }
 
-    public void Elim1()
+    public void Elim1(string object1)
     {
         FuncionObjeto objeto = FindObjectOfType<FuncionObjeto>();
-        objeto.objeto.quantity--;
+        IInventory inventario = FindObjectOfType<IInventory>();
+        foreach (var i in inventario.inventory) if (i.name == object1) inventario.Remove(i.name, 1, i.objeto);
     }
     
     public void alerta(string a)
